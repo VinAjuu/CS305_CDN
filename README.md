@@ -1,3 +1,29 @@
+### 运行步骤
+首先按照教程编译docker<br>
+编译完成镜像后，使用`docker run -it -p 7778:7778 -p 7779:7779 -v /pathOfTheStartProxy:/opt project:latest /bin/bash`创建容器，完成映射<br>
+打开docker的CLI,图中第二个按钮<br>![image](https://user-images.githubusercontent.com/58821193/170847624-b996ca08-3f76-4f15-b3a6-33e74981f4b8.png)
+<br>
+`cd autograder/netsim`<br>
+创建10个servers的网络,可能会遇到too short的问题，参照issue1<br>
+`python3 ./netsim.py servers start -s servers/10servers` <br>
+`cd /opt`<br>
+打开dns服务器<br>
+`python3 dns.py /autograder/netsim/servers/10servers  8900` <br>
+创建一个新的命令行 `cd /opt`<br>
+打开代理<br>
+`python3 proxy.py /home/log1.txt 0.1 7778 8900` 打开代理<br>
+安装 [flash](https://soft.flash.cn/flashcenter/index.html) <br>
+使用flash的游览器查看效果(图中listenport为8999，可设置为其他的)<br>
+![image](https://user-images.githubusercontent.com/58821193/170847787-5cad0d64-6e0c-4c9f-ab38-060db9e4ba8f.png)
+
+### To do list
+- [ ] 对照文档检查设计是否完全
+- [ ] 传输完成后退出代理
+- [ ] 实验设计
+- [ ] 对实验结果进行绘制
+
+
+
 # Development Environment
 
 For this project, we are providing a docker image pre-configured with the software you will need. You can choose other environment, but we strongly recommend that you do all development and testing in this image. **Your code must compile and run correctly on this image as we will be using it for grading.**
