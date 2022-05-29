@@ -29,4 +29,4 @@ def calculate_throughput():
 
 
 if __name__ == '__main__':
-    app.run(port=8999)
+    app.run(host='0.0.0.0',port=7778)
