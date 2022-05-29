@@ -14,6 +14,7 @@
 `python3 proxy.py /home/log1.txt 0.1 7778 8900` 打开代理<br>
 安装 [flash](https://soft.flash.cn/flashcenter/index.html) <br>
 使用flash的游览器查看效果(图中listenport为8999，按上面命令应为7778)<br>
+也可以使用其他游览器进行查看，但是需支持flash。360和edge IE模式可以支持flash，edge不行。<br>
 ![image](https://user-images.githubusercontent.com/58821193/170847787-5cad0d64-6e0c-4c9f-ab38-060db9e4ba8f.png)
 
 ### To do list
