@@ -12,12 +12,11 @@ content_server_port = None
 log = None
 bitrates_with_port = dict()
 throughput_with_port = dict()
-dns_client = None
 app = Flask(__name__)
 
 
 def init():
-    global log_path, alpha, listen_port, dns_port, content_server_port, log, dns_client
+    global log_path, alpha, listen_port, dns_port, content_server_port, log
 
     log_path = sys.argv[1]
     alpha = float(sys.argv[2])
@@ -32,20 +31,20 @@ def init():
 
 @app.route('/index.html')
 def init_page():
-    return Response(requests.get('http://localhost:' + str(request_dns()) + '/index.html'))
+    return Response(requests.get('http://localhost:' + str(get_port()) + '/index.html'))
 
 
 @app.route("/swfobject.js")
 def get_js():
-    return Response(requests.get('http://localhost:' + str(request_dns()) + '/swfobject.js'))
+    return Response(requests.get('http://localhost:' + str(get_port()) + '/swfobject.js'))
 
 
 @app.route("/StrobeMediaPlayback.swf")
 def get_swf():
-    return Response(requests.get('http://localhost:' + str(request_dns()) + '/StrobeMediaPlayback.swf'))
+    return Response(requests.get('http://localhost:' + str(get_port()) + '/StrobeMediaPlayback.swf'))
 
 
-def get_dns():
+def get_port():
     if content_server_port:
         port = content_server_port
     else:
@@ -59,12 +58,12 @@ def get_video(file_name: str):
     if file_name == 'big_buck_bunny.f4m':
         # record bitrate option in a server port.
         # Convert request to nolist f4m file
-        server_port = get_dns()
+        server_port = get_port()
         f4m_file = requests.get('http://localhost:' + str(server_port) + '/vod/big_buck_bunny.f4m')
         record_bitrate_with_port(server_port, f4m_file)
         return Response(requests.get('http://localhost:' + str(server_port) + '/vod/big_buck_bunny_nolist.f4m'))
     else:
-        server_port = get_dns()
+        server_port = get_port()
         if server_port not in bitrates_with_port:
             f4m_file = requests.get('http://localhost:' + str(server_port) + '/vod/big_buck_bunny.f4m')
             record_bitrate_with_port(server_port, f4m_file)
