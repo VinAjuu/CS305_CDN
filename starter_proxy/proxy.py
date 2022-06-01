@@ -2,7 +2,8 @@ import re
 import sys
 import time
 import requests
-from flask import Flask, Response
+from flask import Flask, Response, abort, request
+from multiprocessing import Process
 from socket import *
 log_path = None
 alpha = None
@@ -123,7 +124,21 @@ def record_bitrate_with_port(port, f4m_file):
     bitrates_list.sort()
     bitrates_with_port[port] = bitrates_list
 
+def shutdown(server:Process):
+    global log
+    log.close()
+    server.terminate()
+    server.join()
+
 
 if __name__ == '__main__':
-    init()
-    app.run(host='0.0.0.0', port=listen_port)
+    try:
+        init()
+        app.run(host='0.0.0.0', port=listen_port)
+        server = Process(target=app.run,args=('0,0,0,0',listen_port))
+        server.start()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        shutdown(server)
+        print("Proxy exit")
